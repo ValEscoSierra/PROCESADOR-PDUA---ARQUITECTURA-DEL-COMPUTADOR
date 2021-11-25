@@ -1,0 +1,222 @@
+INIT_LOOP: MOV ACC, CTE					
+		Q								
+		MOV DPTR, ACC  					
+		MOV ACC, [DPTR] 				
+		MOV A, ACC 						
+		MOV ACC, CTE					
+		0X01							
+		AND ACC,A						
+		MOV A,ACC						
+		JZ CTE								
+		TEST_1
+		JMP CTE							
+		TEST_2
+TEST_1: MOV ACC, CTE						
+		Q-1								
+		MOV DPTR, ACC  				
+		MOV ACC, [DPTR]
+		MOV A,ACC	
+		JZ CTE									
+		COND_0011													
+COND_01: MOV ACC, CTE				
+		M							
+		MOV DPTR, ACC  				
+		MOV ACC, [DPTR] 			
+		MOV A, ACC 					
+		MOV ACC, CTE				
+		X							
+		MOV DPTR,ACC				
+		MOV ACC,[DPTR]				
+		ADD ACC,A					
+		MOV [DPTR],ACC 				
+		JMP CTE
+		COND_0011						
+TEST_2:	MOV ACC, CTE					
+        Q-1								
+        MOV DPTR, ACC  					
+        MOV ACC, [DPTR]
+		MOV A,ACC
+		JZ CTE								
+		COND_10							
+		JMP CTE							
+		COND_0011
+COND_10: MOV ACC, CTE				
+		M						
+		MOV DPTR, ACC  			
+		MOV ACC, [DPTR] 		
+		CA2 ACC					
+		MOV A, ACC 				
+		MOV ACC, CTE			
+		X						
+		MOV DPTR,ACC			
+		MOV ACC,[DPTR]			
+		ADD ACC,A				
+		MOV [DPTR],ACC 			
+COND_0011: MOV ACC, CTE				
+		X							
+		MOV DPTR,ACC				
+		MOV ACC,[DPTR]							
+		INV ACC						
+		SLR ACC						
+		MOV A,ACC					
+		MOV ACC,CTE				
+		0X01					
+		CA2 ACC					
+		XOR ACC,A
+		MOV A,ACC
+		MOV ACC,CTE
+		rpto
+		MOV DPTR,ACC
+		MOV ACC,A
+		MOV [DPTR],ACC
+		MOV ACC,CTE
+		X
+		MOV DPTR,ACC
+		MOV ACC,[DPTR]						
+		MOV A,ACC					
+		MOV ACC,CTE				
+		0X01							
+		AND ACC,A
+		JZ CTE
+		SLR_M
+		JMP CTE
+		SLRNXOR
+SLR_M:	MOV ACC,CTE
+		rpto
+		MOV DPTR,ACC
+		MOV ACC,[DPTR]
+		MOV A,ACC
+		MOV ACC,CTE
+		X
+		MOV DPTR,ACC
+		MOV ACC,A
+		MOV [DPTR],ACC
+		MOV ACC, CTE				
+		Q							
+		MOV DPTR,ACC				
+		MOV ACC,[DPTR]				
+		SLR ACC
+		MOV A,ACC
+		MOV ACC,CTE
+		AUX_Q
+		MOV DPTR,ACC
+		MOV ACC,A
+		MOV [DPTR],ACC
+		MOV ACC,CTE
+		Q
+		MOV DPTR,ACC
+		MOV ACC,[DPTR]
+		MOV A,ACC		
+		JMP CTE 
+		COMPROBAR	
+	SLRNXOR: MOV ACC,CTE
+			rpto
+			MOV DPTR,ACC
+			MOV ACC,[DPTR]
+			MOV A,ACC
+			MOV ACC,CTE
+			X
+			MOV DPTR,ACC
+			MOV ACC,A
+			MOV [DPTR],ACC
+			MOV ACC, CTE				
+			Q							
+			MOV DPTR,ACC				
+			MOV ACC,[DPTR]				
+			INV ACC						
+			SLR ACC						
+			MOV A,ACC	
+			MOV ACC,CTE				
+			0X01					
+			CA2 ACC					
+			XOR ACC,A
+			MOV A,ACC
+			MOV ACC,CTE
+			AUX_Q
+			MOV DPTR,ACC
+			MOV ACC,A
+			MOV [DPTR],ACC
+			MOV ACC,CTE
+			Q
+			MOV DPTR,ACC
+			MOV ACC,[DPTR]
+			MOV A,ACC				
+COMPROBAR:	MOV ACC,CTE				
+			0X01							
+			AND ACC,A						
+			JZ CTE								
+			ASIG_0
+			JMP CTE							
+			ASIG_1
+	ASIG_0: MOV ACC,CTE
+			AUX_Q
+			MOV DPTR,ACC
+			MOV ACC,[DPTR]
+			MOV A,ACC
+			MOV ACC,CTE
+			Q
+			MOV DPTR,ACC
+			MOV ACC,A
+			MOV [DPTR],ACC
+			MOV ACC,CTE			
+			0X00					
+			MOV A,ACC				
+			MOV ACC, CTE		
+			Q-1							
+			MOV DPTR, ACC  				
+			MOV ACC, [DPTR] 			
+			MOV ACC,A					
+			MOV [DPTR],ACC
+			JMP CTE
+			COUNT_L
+	ASIG_1: MOV ACC,CTE
+			AUX_Q
+			MOV DPTR,ACC
+			MOV ACC,[DPTR]
+			MOV A,ACC
+			MOV ACC,CTE
+			Q
+			MOV DPTR,ACC
+			MOV ACC,A
+			MOV [DPTR],ACC
+			MOV ACC,CTE			
+			0X01			
+			MOV A,ACC		
+			MOV ACC,CTE 	
+			Q-1						
+			MOV DPTR, ACC  			
+			MOV ACC, [DPTR] 		
+			MOV ACC,A				
+			MOV [DPTR],ACC			
+COUNT_L: MOV ACC, CTE						
+	fxff														
+	MOV A,ACC							
+	MOV ACC,CTE					
+	COUNT						
+	MOV DPTR,ACC				
+	MOV ACC,[DPTR]				
+	ADD ACC,A					
+	MOV [DPTR],ACC
+	MOV A,ACC
+	JZ CTE									
+	FINAL
+	JMP CTE								
+	INIT_LOOP			
+FINAL: MOV ACC,CTE
+	Q
+	MOV DPTR,ACC
+	MOV ACC,[DPTR]
+	MOV A,ACC
+	MOV ACC,CTE
+	X
+	MOV DPTR,ACC
+	MOV ACC,[DPTR]
+	HALT
+var X: 		0x00
+var M: 		0x08
+var Q: 		0x05
+var COUNT: 	0x08
+var Q-1: 	0x00 
+var rpto:   0x00
+var AUX_Q:  0X00
+
